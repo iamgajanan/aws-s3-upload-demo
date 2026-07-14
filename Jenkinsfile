@@ -10,12 +10,22 @@ pipeline {
             }
         }
 
-        stage('Verify') {
+        stage('Backend') {
             steps {
-                sh 'pwd'
-                sh 'ls -la'
+                dir('backend') {
+                    sh 'npm install'
+                    sh 'npm run build'
+                }
             }
         }
 
+        stage('Frontend') {
+            steps {
+                dir('frontend') {
+                    sh 'npm install'
+                    sh 'npm run build'
+                }
+            }
+        }
     }
 }
