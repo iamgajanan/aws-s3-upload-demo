@@ -1,21 +1,31 @@
 pipeline {
+
     agent any
 
     stages {
 
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build Images') {
+            steps {
+                sh '''
+                docker compose build
+                '''
+            }
+        }
+
         stage('Deploy') {
             steps {
                 sh '''
-                cd /home/ubuntu/aws-s3-upload-demo
-
-                git pull origin main
-
-                docker compose down
-
-                docker compose up -d --build
+                docker compose up -d
                 '''
             }
         }
 
     }
+
 }
