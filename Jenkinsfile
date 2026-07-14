@@ -5,27 +5,18 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/iamgajanan/aws-s3-upload-demo.git'
+                checkout scm
             }
         }
 
-        stage('Backend') {
+        stage('Deploy') {
             steps {
-                dir('backend') {
-                    sh 'npm install'
-                    sh 'npm run build'
-                }
+                sh '''
+                docker compose down
+                docker compose up -d --build
+                '''
             }
         }
 
-        stage('Frontend') {
-            steps {
-                dir('frontend') {
-                    sh 'npm install'
-                    sh 'npm run build'
-                }
-            }
-        }
     }
 }
